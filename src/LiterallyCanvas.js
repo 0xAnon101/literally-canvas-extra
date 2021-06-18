@@ -64,12 +64,13 @@ class LiterallyCanvas {
         this.shapes = [];
         this.undoStack = [];
         this.redoStack = [];
-
+        this.selectCtx = null;
         this.isDragging = false;
         this.position = {x: 0, y: 0};
         this.scale = 1.0;
         // GUI immediately replaces this value, but it's initialized so you can have
         // something really simple
+
         this.setTool(new this.opts.tools[0](this));
 
         this.width = opts.imageSize.width || INFINITE;
@@ -89,6 +90,12 @@ class LiterallyCanvas {
         }
 
         this.respondToSizeChange = function() {};
+        this.executeGrid();
+        window.visualViewport.addEventListener("resize", () => {
+            setTimeout(() => {
+                this.executeGrid();
+            }, 0);
+        });
     }
 
     bindToElement(containerEl) {
@@ -147,6 +154,9 @@ class LiterallyCanvas {
     }
 
     trigger(name, data) {
+        if (name === "shapeSelected") {
+            // console.log(name, data);
+        }
         this.canvas.dispatchEvent(new CustomEvent(name, {detail: data}));
         // dispatchEvent has a boolean value that doesn't mean anything to us, so
         // don't let CoffeeScript send it back
@@ -366,6 +376,48 @@ class LiterallyCanvas {
         this.keepPanInImageBounds();
         this.repaintAllLayers();
         this.trigger("pan", {x: this.position.x, y: this.position.y});
+        this.executeGrid();
+    }
+
+    executeGrid() {
+        // draw a line every *step* pixels
+        const backgroundCanvas =
+            this.backgroundCanvas || document.querySelectorAll("canvas")[1];
+        const backgroundCtx =
+            this.backgroundCtx || backgroundCanvas.getContext("2d");
+        const step = 50;
+        const canvas = backgroundCanvas;
+        // our end points
+        const width = canvas.width;
+        const height = canvas.height;
+
+        // set our styles
+        backgroundCtx.save();
+        backgroundCtx.strokeStyle = "gray"; // line colors
+        backgroundCtx.fillStyle = "black"; // text color
+        backgroundCtx.font = "14px Monospace";
+        backgroundCtx.lineWidth = 0.35;
+
+        // draw vertical from X to Height
+        for (let x = 0; x < width; x += step) {
+            // draw vertical line
+            backgroundCtx.beginPath();
+            backgroundCtx.moveTo(x, 0);
+            backgroundCtx.lineTo(x, height);
+            backgroundCtx.stroke();
+        }
+
+        // draw horizontal from Y to Width
+        for (let y = 0; y < height; y += step) {
+            // draw horizontal line
+            backgroundCtx.beginPath();
+            backgroundCtx.moveTo(0, y);
+            backgroundCtx.lineTo(width, y);
+            backgroundCtx.stroke();
+        }
+
+        // restore the styles from before this function was called
+        backgroundCtx.restore();
     }
 
     zoom(factor) {

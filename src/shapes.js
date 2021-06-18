@@ -124,11 +124,11 @@ const JSONToShape = function({className, data, id}) {
             }
             return shape;
         } else {
-            console.log("Unreadable shape:", className, data);
+            // console.log("Unreadable shape:", className, data);
             return null;
         }
     } else {
-        console.log("Unknown shape:", className, data);
+        // console.log("Unknown shape:", className, data);
         return null;
     }
 };
@@ -427,7 +427,7 @@ const _doAllPointsShareStyle = function(points) {
     const {color} = points[0];
     for (let point of points) {
         if (point.size !== size || point.color !== color) {
-            console.log(size, color, point.size, point.color);
+            // console.log(size, color, point.size, point.color);
         }
         if (point.size !== size || point.color !== color) {
             return false;
@@ -762,7 +762,7 @@ defineShape("Text", {
         );
 
         if (this.v < 1) {
-            console.log("repairing baseline");
+            // console.log("repairing baseline");
             this.v = 1;
             this.x -= this.renderer.metrics.bounds.minx;
             this.y -=
@@ -796,8 +796,8 @@ defineShape("Text", {
         const lcBoundingRect = {
             x: -lc.position.x / lc.scale,
             y: -lc.position.y / lc.scale,
-            width: lc.canvas.width / lc.scale,
-            height: lc.canvas.height / lc.scale,
+            width: lc.canvas.offsetWidth / lc.scale,
+            height: lc.canvas.offsetHeight / lc.scale,
         };
         // really just enforce max width
         if (br.x + br.width > lcBoundingRect.x + lcBoundingRect.width) {

@@ -25,40 +25,38 @@
 
   <body>
     <div class="literally"></div>
-    <button onclick="demoLC.setColor('primary', '#000000')">Black</button>
-    <button onclick="demoLC.setColor('primary', '#ff0000')">Red</button>
-    <button onclick="demoLC.setColor('primary', '#00ff00')">Green</button>
-    <button onclick="demoLC.setColor('primary', '#0000ff')">Blue</button>
+    <button onclick="window.demoLC.setColor('primary', '#000000')">Black</button>
+    <button onclick="window.demoLC.setColor('primary', '#ff0000')">Red</button>
+    <button onclick="window.demoLC.setColor('primary', '#00ff00')">Green</button>
+    <button onclick="window.demoLC.setColor('primary', '#0000ff')">Blue</button>
     <br>
-    <button onclick="demoLC.trigger('setStrokeWidth', 10)">10px</button>
-    <button onclick="demoLC.trigger('setStrokeWidth', 20)">20px</button>
-    <button onclick="demoLC.trigger('setStrokeWidth', 30)">30px</button>
+    <button onclick="window.demoLC.trigger('setStrokeWidth', 10)">10px</button>
+    <button onclick="window.demoLC.trigger('setStrokeWidth', 20)">20px</button>
+    <button onclick="window.demoLC.trigger('setStrokeWidth', 30)">30px</button>
     <br>
-    <button onclick="demoLC.setTool(Pencil)">Pencil</button>
-    <button onclick="demoLC.setTool(Line)">Line</button>
-    <button onclick="demoLC.setTool(Eraser)">Eraser</button>
-    <button onclick="demoLC.setTool(Ellipse)">Ellipse</button>
-    <button onclick="demoLC.setTool(Pan)">Pan</button>
-    <button onclick="demoLC.setTool(Rectangle)">Rectangle</button>
-    <button onclick="demoLC.setTool(SelectShape)">SelectShape</button>
-    <button onclick="demoLC.setTool(Text)">Text</button>
-    <button onclick="demoLC.setTool(Eyedropper)">Eyedropper</button>
-    <button onclick="demoLC.setTool(Polygon)">Polygon</button>
+    <button onclick="window.demoLC.setTool(Pencil)">Pencil</button>
+    <button onclick="window.demoLC.setTool(Line)">Line</button>
+    <button onclick="window.demoLC.setTool(Eraser)">Eraser</button>
+    <button onclick="window.demoLC.setTool(Ellipse)">Ellipse</button>
+    <button onclick="window.demoLC.setTool(Pan)">Pan</button>
+    <button onclick="window.demoLC.setTool(Rectangle)">Rectangle</button>
+    <button onclick="window.demoLC.setTool(SelectShape)">SelectShape</button>
+    <button onclick="window.demoLC.setTool(Text)">Text</button>
+    <!-- <button onclick="window.demoLC.setTool(Eyedropper)">Eyedropper</button> -->
+    <button onclick="window.demoLC.setTool(Polygon)">Polygon</button>
 
     <script src="../dist/bundle.js"></script>
 
     <script type="text/javascript">
       
       const LiterallyCanvas = LC.LiterallyCanvas;
-      console.log(LC, '=====LiterallyCanvas')
       const mainDiv = document.querySelector('.literally');
       const lc = new LiterallyCanvas(mainDiv, {
         ...LC.defaultOptions,
         defaultStrokeWidth: 10,
         backgroundColor: '#FFF',
-        tools:[LC.Pencil,LC.Line,LC.Eraser]
+        // tools:[LC.Pencil,LC.Line,LC.Eraser]
       });
-      console.log(lc)
       window.demoLC = lc;
       // Tools
       window.Pencil = new LC.Pencil(lc);

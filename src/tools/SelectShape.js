@@ -5,7 +5,7 @@ class SelectShape extends Tool {
     constructor() {
         super();
         this.selectCanvas = document.createElement("canvas");
-        this.selectCanvas.style["background-color"] = "transparent";
+        this.selectCanvas.style["background-color"] = "#000";
         this.selectCtx = this.selectCanvas.getContext("2d");
     }
 
@@ -33,11 +33,14 @@ class SelectShape extends Tool {
                 (x = arg.x), (y = arg.y);
                 _this.didDrag = false;
                 shapeIndex = _this._getPixel(x, y, lc, _this.selectCtx);
+                // console.log(shapeIndex, "======");
+
                 _this.selectedShape = lc.shapes[shapeIndex];
                 if (_this.selectedShape != null) {
                     lc.trigger("shapeSelected", {
                         selectedShape: _this.selectedShape,
                     });
+
                     lc.setShapesInProgress([
                         _this.selectedShape,
                         createShape("SelectionBox", {

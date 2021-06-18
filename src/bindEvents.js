@@ -84,7 +84,27 @@ const bindEvents = function(lc, canvas, panWithKeyboard) {
             document.addEventListener("touchend", touchEndListener);
             document.addEventListener("touchcancel", touchEndListener);
         } else {
-            lc.pointerMove(...coordsForTouchEvent(canvas, e));
+            touchEndListener(e);
+        }
+    });
+
+    canvas.addEventListener("keydown", function(e) {
+        if (e.code === "Backspace") {
+            const selectedShape = lc.tool.selectedShape;
+
+            /* Remove shape from shapes list*/
+
+            if (selectedShape) {
+                const selectedShapeIndex = lc.shapes.indexOf(selectedShape);
+
+                lc.shapes.splice(selectedShapeIndex, 1);
+                lc.setShapesInProgress([]); /* Also removes selection box */
+                lc.trigger("shapeMoved", {shape: selectedShape});
+                lc.trigger("drawingChange", {});
+                lc.tool.selectedShape = null;
+                lc.repaintLayer("main");
+                lc.setTool(new LC.SelectShape(lc));
+            }
         }
     });
 
