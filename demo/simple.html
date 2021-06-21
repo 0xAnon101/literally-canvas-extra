@@ -26,7 +26,7 @@
   <body>
     <div class="literally"></div>
     <button onclick="window.demoLC.setColor('primary', '#000000')">Black</button>
-    <button onclick="window.demoLC.setColor('primary', '#ff0000')">Red</button>
+    <button onclick="fillMe()">Red</button>
     <button onclick="window.demoLC.setColor('primary', '#00ff00')">Green</button>
     <button onclick="window.demoLC.setColor('primary', '#0000ff')">Blue</button>
     <br>
@@ -40,7 +40,7 @@
     <button onclick="window.demoLC.setTool(Ellipse)">Ellipse</button>
     <button onclick="window.demoLC.setTool(Pan)">Pan</button>
     <button onclick="window.demoLC.setTool(Rectangle)">Rectangle</button>
-    <button onclick="window.demoLC.setTool(SelectShape)">SelectShape</button>
+    <button onclick="executeMe()">SelectShape</button>
     <button onclick="window.demoLC.setTool(Text)">Text</button>
     <!-- <button onclick="window.demoLC.setTool(Eyedropper)">Eyedropper</button> -->
     <button onclick="window.demoLC.setTool(Polygon)">Polygon</button>
@@ -48,7 +48,17 @@
     <script src="../dist/bundle.js"></script>
 
     <script type="text/javascript">
-      
+      const executeMe = () => {
+        window.demoLC.setTool(SelectShape);
+       
+      }
+
+      const fillMe = () => {
+        window.demoLC.setColor('primary', '#ff0000');
+        document.dispatchEvent(new CustomEvent("changeFill", {
+           detail: { data : "#ff0000" }
+        }))
+      }
       const LiterallyCanvas = LC.LiterallyCanvas;
       const mainDiv = document.querySelector('.literally');
       const lc = new LiterallyCanvas(mainDiv, {

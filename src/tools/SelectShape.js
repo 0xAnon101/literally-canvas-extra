@@ -33,7 +33,6 @@ class SelectShape extends Tool {
                 (x = arg.x), (y = arg.y);
                 _this.didDrag = false;
                 shapeIndex = _this._getPixel(x, y, lc, _this.selectCtx);
-                // console.log(shapeIndex, "======");
 
                 _this.selectedShape = lc.shapes[shapeIndex];
                 if (_this.selectedShape != null) {
@@ -96,6 +95,20 @@ class SelectShape extends Tool {
         selectShapeUnsubscribeFuncs.push(lc.on("lc-pointerdown", onDown));
         selectShapeUnsubscribeFuncs.push(lc.on("lc-pointerdrag", onDrag));
         selectShapeUnsubscribeFuncs.push(lc.on("lc-pointerup", onUp));
+        selectShapeUnsubscribeFuncs.push(
+            lc.on(
+                "primaryColorChange",
+                (function(_this) {
+                    return function(newColor) {
+                        if (!_this.selectedShape) {
+                            return;
+                        }
+                        _this.selectedShape.fillColor = newColor;
+                        return lc.repaintLayer("main");
+                    };
+                })(this),
+            ),
+        );
         return this._drawSelectCanvas(lc);
     }
 

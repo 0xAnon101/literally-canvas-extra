@@ -23,7 +23,7 @@ const buttonIsDown = function(e) {
 
 const bindEvents = function(lc, canvas, panWithKeyboard) {
     if (panWithKeyboard == null) {
-        panWithKeyboard = false;
+        panWithKeyboard = true;
     }
     const unsubs = [];
 
@@ -88,48 +88,48 @@ const bindEvents = function(lc, canvas, panWithKeyboard) {
         }
     });
 
-    canvas.addEventListener("keydown", function(e) {
-        if (e.code === "Backspace") {
-            const selectedShape = lc.tool.selectedShape;
+    const deleteShapeHandler = () => {
+        const selectedShape = lc.tool.selectedShape;
 
-            /* Remove shape from shapes list*/
+        if (selectedShape) {
+            const selectedShapeIndex = lc.shapes.indexOf(selectedShape);
 
-            if (selectedShape) {
-                const selectedShapeIndex = lc.shapes.indexOf(selectedShape);
-
-                lc.shapes.splice(selectedShapeIndex, 1);
-                lc.setShapesInProgress([]); /* Also removes selection box */
-                lc.trigger("shapeMoved", {shape: selectedShape});
-                lc.trigger("drawingChange", {});
-                lc.tool.selectedShape = null;
-                lc.repaintLayer("main");
-                lc.setTool(new LC.SelectShape(lc));
-            }
+            lc.shapes.splice(selectedShapeIndex, 1);
+            lc.setShapesInProgress([]); /* Also removes selection box */
+            lc.trigger("shapeMoved", {shape: selectedShape});
+            lc.trigger("drawingChange", {});
+            lc.tool.selectedShape = null;
+            lc.repaintLayer("main");
+            lc.setTool(new LC.SelectShape(lc));
         }
-    });
+    };
 
-    if (panWithKeyboard) {
-        console.warn("Keyboard panning is deprecated.");
-        const listener = function(e) {
-            switch (e.keyCode) {
-                case 37:
-                    lc.pan(-10, 0);
+    const fillShapeHandler = e => {
+        const selectedShape = lc.tool.selectedShape;
+        if (selectedShape) {
+            lc.setColor("primary", e.detail.data);
+        }
+    };
+
+    if (true) {
+        const deleteListener = function(e) {
+            switch (e.code) {
+                case "Backspace":
+                    deleteShapeHandler();
                     break;
-                case 38:
-                    lc.pan(0, -10);
-                    break;
-                case 39:
-                    lc.pan(10, 0);
-                    break;
-                case 40:
-                    lc.pan(0, 10);
+                default:
                     break;
             }
-            lc.repaintAllLayers();
         };
 
-        document.addEventListener("keydown", listener);
+        const fillListener = function(e) {
+            fillShapeHandler(e);
+        };
+
+        document.addEventListener("keydown", deleteListener);
+        document.addEventListener("changeFill", fillListener);
         unsubs.push(() => document.removeEventListener(listener));
+        unsubs.push(() => document.removeEventListener(fillListener));
     }
 
     return () => unsubs.map(f => f());

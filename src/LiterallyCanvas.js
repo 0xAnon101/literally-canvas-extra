@@ -154,9 +154,6 @@ class LiterallyCanvas {
     }
 
     trigger(name, data) {
-        if (name === "shapeSelected") {
-            // console.log(name, data);
-        }
         this.canvas.dispatchEvent(new CustomEvent(name, {detail: data}));
         // dispatchEvent has a boolean value that doesn't mean anything to us, so
         // don't let CoffeeScript send it back
@@ -311,6 +308,7 @@ class LiterallyCanvas {
                 this.repaintLayer("main");
                 break;
         }
+
         this.trigger(`${name}ColorChange`, this.colors[name]);
         if (name === "background") {
             this.trigger("drawingChange");
