@@ -103,7 +103,7 @@ class SelectShape extends Tool {
                         if (!_this.selectedShape) {
                             return;
                         }
-                        _this.selectedShape.fillColor = newColor;
+                        _this.selectedShape.strokeColor = newColor;
                         return lc.repaintLayer("main");
                     };
                 })(this),
@@ -117,7 +117,7 @@ class SelectShape extends Tool {
                         if (!_this.selectedShape) {
                             return;
                         }
-                        _this.selectedShape.strokeColor = newColor;
+                        _this.selectedShape.fillColor = newColor;
                         return lc.repaintLayer("main");
                     };
                 })(this),
