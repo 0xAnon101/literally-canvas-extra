@@ -110,6 +110,20 @@ class SelectShape extends Tool {
             ),
         );
         selectShapeUnsubscribeFuncs.push(
+            lc.on(
+                "secondaryColorChange",
+                (function(_this) {
+                    return function(newColor) {
+                        if (!_this.selectedShape) {
+                            return;
+                        }
+                        _this.selectedShape.strokeColor = newColor;
+                        return lc.repaintLayer("main");
+                    };
+                })(this),
+            ),
+        );
+        selectShapeUnsubscribeFuncs.push(
             lc.on("setStrokeWidth", strokeWidth => {
                 this.selectedShape.strokeWidth = strokeWidth;
                 lc.trigger("toolDidUpdateOptions");

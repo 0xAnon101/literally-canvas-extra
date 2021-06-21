@@ -33,7 +33,6 @@ class ToolWithStroke extends Tool {
 
         unsubscribeFuncs.push(
             lc.on("setStrokeWidth", strokeWidth => {
-                console.log(strokeWidth);
                 this.strokeWidth = strokeWidth;
                 lc.trigger("toolDidUpdateOptions");
             }),
