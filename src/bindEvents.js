@@ -111,6 +111,14 @@ const bindEvents = function(lc, canvas, panWithKeyboard) {
         }
     };
 
+    const strokeShapeHandler = e => {
+        const selectedShape = lc.tool.selectedShape;
+        if (selectedShape) {
+            console.log(e.detail);
+            lc.trigger("setStrokeWidth", e.detail.data);
+        }
+    };
+
     if (true) {
         const deleteListener = function(e) {
             switch (e.code) {
@@ -126,10 +134,18 @@ const bindEvents = function(lc, canvas, panWithKeyboard) {
             fillShapeHandler(e);
         };
 
+        const strokelistener = function(e) {
+            strokeShapeHandler(e);
+        };
+
         document.addEventListener("keydown", deleteListener);
         document.addEventListener("changeFill", fillListener);
-        unsubs.push(() => document.removeEventListener(listener));
-        unsubs.push(() => document.removeEventListener(fillListener));
+        document.addEventListener("changeStroke", strokelistener);
+
+        const listeners = [deleteListener, fillListener, strokelistener];
+        listeners.map(eventListener => {
+            unsubs.push(() => document.removeEventListener(eventListener));
+        });
     }
 
     return () => unsubs.map(f => f());

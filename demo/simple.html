@@ -32,7 +32,7 @@
     <br>
     <button onclick="window.demoLC.trigger('setStrokeWidth', 10)">10px</button>
     <button onclick="window.demoLC.trigger('setStrokeWidth', 20)">20px</button>
-    <button onclick="window.demoLC.trigger('setStrokeWidth', 30)">30px</button>
+    <button onclick="strokeMe()">30px</button>
     <br>
     <button onclick="window.demoLC.setTool(Pencil)">Pencil</button>
     <button onclick="window.demoLC.setTool(Line)">Line</button>
@@ -59,6 +59,14 @@
            detail: { data : "#ff0000" }
         }))
       }
+
+      const strokeMe = () => {
+        window.demoLC.trigger('setStrokeWidth', 30);
+        document.dispatchEvent(new CustomEvent("changeStroke", {
+           detail: { data : 30 }
+        }))
+      }
+      
       const LiterallyCanvas = LC.LiterallyCanvas;
       const mainDiv = document.querySelector('.literally');
       const lc = new LiterallyCanvas(mainDiv, {

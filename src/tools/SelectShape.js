@@ -109,6 +109,13 @@ class SelectShape extends Tool {
                 })(this),
             ),
         );
+        selectShapeUnsubscribeFuncs.push(
+            lc.on("setStrokeWidth", strokeWidth => {
+                this.selectedShape.strokeWidth = strokeWidth;
+                lc.trigger("toolDidUpdateOptions");
+                return lc.repaintLayer("main");
+            }),
+        );
         return this._drawSelectCanvas(lc);
     }
 
